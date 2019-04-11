@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "Typescript typings for node-mailjet project",
   "scripts": {
-    "test": "mocha ./test/outputTests.ts"
+    "test": "mocha test/emailTests.ts"
   },
   "author": "Nikola Andreev",
   "license": "MIT",
