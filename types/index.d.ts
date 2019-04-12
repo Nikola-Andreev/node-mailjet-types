@@ -86,38 +86,136 @@ export interface MailJetResponse {
 
 
 // ***** SMS Api interfaces ***** //
+declare namespace SMS {
+    // root
+    interface MailJet {
+        connect(apiToken: string, options?: MailJetConnectOptions): Client;
+    }
 
-export interface MailJetSMS {
-    connect(apiToken: string, options?: MailJetConnectOptions): SmsClient;
-}
+    // client
+    interface Client {
+        get(action: string): GetResource,
 
-export interface SmsClient {
-    get(action: string): SmsGetResource,
+        post(action: string): PostResource
+    }
 
-    post(action: string): SmsPostResource
-}
+    // resources
+    interface GetResource {
+        id(value: string): GetResource,
 
-export interface SmsPostResource {
-    action(action: string): SmsPostResource,
+        action(action: string): GetResourceAction,
 
-    request(params?: object, callback?: () => void): Promise<SmsResponse>
-}
+        request(params?: GetParams): Promise<GetResponse>,
+    }
 
-export interface SmsGetResource {
-    id(value: string): SmsGetResource,
+    interface PostResource {
+        action(action: string): PostResource,
 
-    action(action: string): SmsGetResource,
+        request(params: SendParams): Promise<SendResponse>
 
-    request(params: object, callback?: () => void): Promise<SmsResponse>
-}
+        request(params?: ExportParams): Promise<ExportResponse>
+    }
 
-export interface SmsResponse {
-    body: any,
-    url?: string
-}
+    interface GetResourceAction {
+        id(value: string): GetResourceActionId
 
-export interface SendSmsData {
-    Text: string,
-    To: string,
-    From: string
+        request(params?: GetParams): Promise<GetResponseAction>
+    }
+
+    interface GetResourceActionId {
+        request(): Promise<ExportResponse>
+    }
+
+    // responses
+    interface GetResponse {
+        body: GetResponseData
+    }
+
+    interface SendResponse {
+        body: PostResponseData
+        url: string
+    }
+
+    interface ExportResponse {
+        body: ExportResponseData
+    }
+
+    interface GetResponseAction {
+        body: GetResponseActionData
+    }
+
+    // response data
+    interface GetResponseData {
+        Data: Array<GetResponseDataData>
+    }
+
+    interface PostResponseData {
+        From: string
+        To: string
+        Text: string
+        MessageId: string
+        SmsCount: number
+        CreationTS: number
+        SentTS: number
+        Cost: ResponseCost
+        Status: ResponseStatus
+    }
+
+    interface ExportResponseData {
+        ID: number
+        CreationTS?: number
+        ExpirationTS?: number
+        Status: ResponseStatus
+        URL?: string
+        FromTs?: number
+        ToTs?: number
+    }
+
+    interface GetResponseActionData {
+        Count: number
+    }
+
+    // response inner data
+    interface GetResponseDataData {
+        From: string
+        To: string
+        Status: ResponseStatus
+        MessageId: string
+        CreationTS: number
+        SentTS: number
+        SMSCount: number
+        Cost: ResponseCost
+    }
+
+    interface ResponseStatus {
+        Code: number
+        Name: string
+        Description: string
+    }
+
+    interface ResponseCost {
+        Value: number
+        Currency: string
+    }
+
+    // request params
+    interface GetParams {
+        FromTS?: number
+        ToTS?: number
+        To?: string
+        StatusCode?: Array<number>
+        Limit?: number
+        Offset?: number
+    }
+
+    interface SendParams {
+        Text: string
+        To: string
+        From: string
+    }
+
+    interface ExportParams {
+        FromTS: number
+        ToTS: number
+    }
 }

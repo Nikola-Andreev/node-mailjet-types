@@ -10,6 +10,8 @@ import {
     MailJetPutResource,
 } from '../types';
 
+const mailJet: MailJetEmail = require('node-mailjet');
+
 describe('Output tests', function () {
 
     const senderMail = 'aneliya@mailjet.com';
@@ -18,7 +20,6 @@ describe('Output tests', function () {
 
     beforeEach(() => {
         // Arrange
-        const mailJet: MailJetEmail = require('node-mailjet');
         connection = mailJet.connect(process.env.MJ_APIKEY_PUBLIC, process.env.MJ_APIKEY_PRIVATE);
     });
 
