@@ -25,12 +25,10 @@ describe('Output tests', function () {
                         "Email": senderMail,
                         "Name": "Me"
                     },
-                    "To": [
-                        {
-                            "Email": "passenger1@mailjet.com",
-                            "Name": "You"
-                        }
-                    ],
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "You"
+                    }],
                     "Subject": "My first Mailjet Email!",
                     "TextPart": "Greetings from Mailjet!",
                     "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Root</a>!</h3>"
@@ -51,29 +49,23 @@ describe('Output tests', function () {
         it('should send email with Cc', async function () {
             // Arrange
             const params: MailJet.Email.SendParams = {
-                "Messages": [
-                    {
-                        "From": {
-                            "Email": senderMail,
-                            "Name": "Mailjet Pilot"
-                        },
-                        "To": [
-                            {
-                                "Email": "passenger1@mailjet.com",
-                                "Name": "passenger 1"
-                            }
-                        ],
-                        "Cc": [
-                            {
-                                "Email": "copilot@mailjet.com",
-                                "Name": "Copilot"
-                            }
-                        ],
-                        "Subject": "Your email flight plan!",
-                        "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
-                        "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3>"
-                    }
-                ],
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Cc": [{
+                        "Email": "copilot@mailjet.com",
+                        "Name": "Copilot"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3>"
+                }],
                 "SandboxMode": true
             };
             // Act
@@ -90,42 +82,33 @@ describe('Output tests', function () {
         it('should send email with Cc and Bcc', async function () {
             // Arrange
             const params: MailJet.Email.SendParams = {
-                "Messages": [
-                    {
-                        "From": {
-                            "Email": senderMail,
-                            "Name": "Mailjet Pilot"
-                        },
-                        "To": [
-                            {
-                                "Email": "passenger1@mailjet.com",
-                                "Name": "passenger 1"
-                            }
-                        ],
-                        "Cc": [
-                            {
-                                "Email": "copilot@mailjet.com",
-                                "Name": "Copilot"
-                            }
-                        ],
-                        "Bcc": [
-                            {
-                                "Email": "air-traffic-control@mailjet.com",
-                                "Name": "Air traffic control"
-                            }
-                        ],
-                        "Subject": "Your email flight plan!",
-                        "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
-                        "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3>"
-                    }
-                ],
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Cc": [{
+                        "Email": "copilot@mailjet.com",
+                        "Name": "Copilot"
+                    }],
+                    "Bcc": [{
+                        "Email": "air-traffic-control@mailjet.com",
+                        "Name": "Air traffic control"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3>"
+                }],
                 "SandboxMode": true
             };
             // Act
             const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
             const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
             const response: MailJet.Email.PostResponse = await mailJetResponse;
-            console.log(response.body);
             // Assert
             expect(response.body.Messages.length).to.be.equal(1);
             expect(response.body.Messages[0].Status).to.be.equal('success');
@@ -140,16 +123,13 @@ describe('Output tests', function () {
                         "Email": senderMail,
                         "Name": "Mailjet Pilot"
                     },
-                    "To": [
-                        {
-                            "Email": "passenger1@mailjet.com",
-                            "Name": "passenger 1"
-                        },
-                        {
-                            "Email": "passenger2@mailjet.com",
-                            "Name": "passenger 2"
-                        }
-                    ],
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }, {
+                        "Email": "passenger2@mailjet.com",
+                        "Name": "passenger 2"
+                    }],
                     "Subject": "Your email flight plan!",
                     "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
                     "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3>"
@@ -172,7 +152,7 @@ describe('Output tests', function () {
             const params: MailJet.Email.SendParams = {
                 "Messages": [{
                     "From": {
-                        "Email": "pilot@mailjet.com",
+                        "Email": senderMail,
                         "Name": "Mailjet Pilot"
                     },
                     "To": [{
@@ -181,23 +161,19 @@ describe('Output tests', function () {
                     }],
                     "Subject": "Your email flight plan!",
                     "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
-                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />!",
-                    "InlinedAttachments": [{
-                        "ContentType": "image/png",
-                        "Filename": "logo.png",
-                        "ContentID": "id1",
-                        "Base64Content": "iVBORw0KGgoAAAANSUhEUgAAABQAAAALCAYAAAB/Ca1DAAAACXBIWXMAAA7EAAAOxAGVKw4b" +
-                            "AAAAB3RJTUUH4wIIChcxurq5eQAAAAd0RVh0QXV0aG9yAKmuzEgAAAAMdEVYdERlc2NyaXB0aW9uABMJISMAA" +
-                            "AAKdEVYdENvcHlyaWdodACsD8w6AAAADnRFWHRDcmVhdGlvbiB0aW1lADX3DwkAAAAJdEVYdFNvZnR3YXJlAF" +
-                            "1w/zoAAAALdEVYdERpc2NsYWltZXIAt8C0jwAAAAh0RVh0V2FybmluZwDAG+aHAAAAB3RFWHRTb3VyY2UA9f+" +
-                            "D6wAAAAh0RVh0Q29tbWVudAD2zJa/AAAABnRFWHRUaXRsZQCo7tInAAABV0lEQVQokaXSPWtTYRTA8d9N7k1z" +
-                            "m6a+RG2x+FItgpu66uDQxbFurrr5OQQHR9FZnARB3PwSFqooddAStCBoqmLtS9omx+ESUXuDon94tnP+5+1JY" +
-                            "m057GyQjZFP+l+S6G2FzlNe3WHtHc2TNI8zOlUUGLxsD1kDyR+EEQE2P/L8Jm/uk6RUc6oZaYM0JxtnpEX9AG" +
-                            "PTtM6w7yzVEb61EaSNn4QD3j5m4QabH6hkVFLSUeqHyCeot0ib6BdNVGscPM/hWWr7S4Tw9TUvbpFUitHTnF6" +
-                            "XrS+sL7O6VBSausT0FZonSkb+nZUFFm+z8Z5up5Btr1Lby7E5Zq4yPrMrLR263ZV52g+LvfW3iy6PXubUNVrn" +
-                            "hqYNF3bmiZ1i1MmLnL7OxIWh4T+IMpYeRNyrRzyZjWg/ioh+aVgZu4WfXxaixbsRve5fiwb8epTo8+kZjSPFf" +
-                            "/sHvgNC0/mbjJbxPAAAAABJRU5ErkJggg=="
-                    }]
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />!"
+                }, {
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger2@mailjet.com",
+                        "Name": "passenger 2"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 2, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />!"
                 }],
                 "SandboxMode": true
             };
@@ -205,16 +181,292 @@ describe('Output tests', function () {
             const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
             const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
             const response: MailJet.Email.PostResponse = await mailJetResponse;
-            console.log(response.body.Messages);
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(2);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+            expect(response.body.Messages[1].To[0].Email).to.be.equal('passenger2@mailjet.com');
+        });
+
+        it('should send in bulk', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Dear passenger 1, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />May the delivery force be with you!"
+                }, {
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger2@mailjet.com",
+                        "Name": "passenger 2"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 2, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Dear passenger 2, welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />May the delivery force be with you!"
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(2);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+            expect(response.body.Messages[1].To[0].Email).to.be.equal('passenger2@mailjet.com');
+        });
+
+        it('should send with vars', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Variables": {
+                        "day": "Monday"
+                    },
+                    "TemplateLanguage": true,
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger, welcome to Mailjet! On this {{var:day}}, may the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!</h3><br />{{var:day}}!"
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
             // Assert
             expect(response.body.Messages.length).to.be.equal(1);
             expect(response.body.Messages[0].Status).to.be.equal('success');
-            expect(response.body.Messages[0].To.length).to.be.equal(2);
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
             expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
-            expect(response.body.Messages[0].To[1].Email).to.be.equal('passenger2@mailjet.com');
         });
 
-        it('should send sample email without options', async function () {
+        it('should send with template', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "TemplateID": 762957,
+                    "TemplateLanguage": true,
+                    "Subject": "Your email flight plan!"
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(1);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+        });
+
+        it('should send with headers', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />!",
+                    "Headers": {
+                        "X-My-header": "X2332X-324-432-534"
+                    }
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(1);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+        });
+
+        it('should send with tag', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />!",
+                    "CustomID": "PassengerEticket1234"
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(1);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+        });
+
+        it('should send with payload', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />!",
+                    "EventPayload": "Eticket,1234,row,15,seat,B"
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(1);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+        });
+
+        it('should send with campaign', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />!",
+                    "CustomCampaign": "SendAPI_campaign",
+                    "DeduplicateCampaign": true
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(1);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+        });
+
+        it('should send with url tags', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />!",
+                    "URLTags": "param1=1&param2=2"
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+            const response: MailJet.Email.PostResponse = await mailJetResponse;
+            // Assert
+            expect(response.body.Messages.length).to.be.equal(1);
+            expect(response.body.Messages[0].Status).to.be.equal('success');
+            expect(response.body.Messages[0].To.length).to.be.equal(1);
+            expect(response.body.Messages[0].To[0].Email).to.be.equal('passenger1@mailjet.com');
+        });
+
+        it('should send with real time monitoring', async function () {
+            const params: MailJet.Email.SendParams = {
+                "Messages": [{
+                    "From": {
+                        "Email": senderMail,
+                        "Name": "Mailjet Pilot"
+                    },
+                    "To": [{
+                        "Email": "passenger1@mailjet.com",
+                        "Name": "passenger 1"
+                    }],
+                    "Subject": "Your email flight plan!",
+                    "TextPart": "Dear passenger 1, welcome to Mailjet! May the delivery force be with you!",
+                    "HTMLPart": "<h3>Welcome to <a href=\"https://www.mailjet.com/\">Mailjet</a>!<br />!",
+                    "MonitoringCategory": "Category1"
+                }],
+                "SandboxMode": true
+            };
+            // Act
+            const mailJetRequest: MailJet.Email.PostResource = connection.post("send", {'version': 'v3.1'});
+            try {
+                const mailJetResponse: Promise<MailJet.Email.PostResponse> = mailJetRequest.request(params);
+                const response: MailJet.Email.PostResponse = await mailJetResponse;
+            } catch (e) {
+                console.log(e.response.text);
+            }
+        });
+
+        it('should send email without options', async function () {
             // Act
             const mailJetRequest: MailJet.Email.PostResource = connection.post("send");
             const mailJetResponse: Promise<MailJet.Email.Response> = mailJetRequest.request({

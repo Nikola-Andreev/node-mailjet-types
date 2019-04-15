@@ -44,7 +44,7 @@ export module MailJet {
 
             request(params: SendParams): Promise<PostResponse>
 
-            request(params: object, callback?: () => void): Promise<Response>
+            request(params: object, callback?: (error: Error, res: Response) => void): Promise<Response>
         }
 
         interface GetResource {
@@ -52,13 +52,13 @@ export module MailJet {
 
             action(action: string): GetResource
 
-            request(params?: object, callback?: () => void): Promise<Response>
+            request(params?: object, callback?: (error: Error, res: Response) => void): Promise<Response>
         }
 
         interface PutResource {
             id(value: string): PutResource
 
-            request(params: object, callback?: () => void): Promise<Response>
+            request(params: object, callback?: (error: Error, res: Response) => void): Promise<Response>
         }
 
         // responses
@@ -70,77 +70,11 @@ export module MailJet {
             readonly body: PostResponseData
         }
 
-        // response data
-        interface PostResponseData {
-            readonly Messages: [{
-                readonly Status: string
-                readonly To: ReadonlyArray<PostResponseDataTo>
-                readonly Cc: ReadonlyArray<PostResponseDataTo>
-                readonly Bcc: ReadonlyArray<PostResponseDataTo>
-
-            }]
-        }
-
-        // response inner data
-        interface PostResponseDataTo {
-            readonly Email: string
-            readonly MessageUUID: string
-            readonly MessageID: number
-            readonly MessageHref: string
-        }
-
         // request params
         interface SendParams {
-            // Messages content must be in separate interface
-            Messages: Array<{
-                From: {
-                    Email: string
-                    Name: string
-                },
-                To: Array<SendParamsRecipient>
-                Cc?: Array<SendParamsRecipient>
-                Bcc?: Array<SendParamsRecipient>
-                Subject: string
-                TextPart: string
-                HTMLPart: string
-                Attachments?: [{
-                    "ContentType": string,
-                    "Filename": string,
-                    "Base64Content": string
-                }]
-                InlinedAttachments?: [{
-                    ContentType: string,
-                    Filename: string,
-                    ContentID: string,
-                    Base64Content: string
-                }]
-            }>
+            Messages: Array<SendParamsMessage>
             SandboxMode?: boolean
         }
-
-// export interface MailJetPostResponseBody {
-//     Messages: [{
-//         Status: string,
-//         To: [{
-//             Email: string,
-//             MessageID: string,
-//             MessageHref: string
-//         }]
-//     }]
-// }
-//
-// export interface MailJetPostResponseBody2 {
-//     Sent: [{
-//         Email: string,
-//         MessageID: string
-//     }]
-// }
-
-// export interface MailJetGetResponseBody {
-//     readonly Count: number,
-//     readonly Data: Array<object>,
-//     readonly Total: number
-// }
     }
 
     namespace SMS {
@@ -200,60 +134,6 @@ export module MailJet {
             readonly body: GetResponseActionData
         }
 
-        // response data
-        interface GetResponseData {
-            readonly Data: ReadonlyArray<GetResponseDataData>
-        }
-
-        interface PostResponseData {
-            readonly From: string
-            readonly To: string
-            readonly Text: string
-            readonly MessageId: string
-            readonly SmsCount: number
-            readonly CreationTS: number
-            readonly SentTS: number
-            readonly Cost: ResponseCost
-            readonly Status: ResponseStatus
-        }
-
-        interface ExportResponseData {
-            readonly ID: number
-            readonly CreationTS?: number
-            readonly ExpirationTS?: number
-            readonly Status: ResponseStatus
-            readonly URL?: string
-            readonly FromTs?: number
-            readonly ToTs?: number
-        }
-
-        interface GetResponseActionData {
-            readonly Count: number
-        }
-
-        // response inner data
-        interface GetResponseDataData {
-            readonly From: string
-            readonly To: string
-            readonly Status: ResponseStatus
-            readonly MessageId: string
-            readonly CreationTS: number
-            readonly SentTS: number
-            readonly SMSCount: number
-            readonly Cost: ResponseCost
-        }
-
-        interface ResponseStatus {
-            readonly Code: number
-            readonly Name: string
-            readonly Description: string
-        }
-
-        interface ResponseCost {
-            readonly Value: number
-            readonly Currency: string
-        }
-
         // request params
         interface GetParams {
             FromTS?: number
@@ -277,9 +157,114 @@ export module MailJet {
     }
 }
 
-
-// private helper interfaces
+// *** Email private interfaces *** //
 interface SendParamsRecipient {
     Email: string
     Name: string
+}
+
+interface SendParamsMessage {
+    From: {
+        Email: string
+        Name: string
+    }
+    To: Array<SendParamsRecipient>
+    Cc?: Array<SendParamsRecipient>
+    Bcc?: Array<SendParamsRecipient>
+    Variables?: object
+    TemplateID? : number
+    TemplateLanguage?: boolean
+    Subject: string
+    TextPart?: string
+    HTMLPart?: string
+    MonitoringCategory?: string
+    URLTags?: string
+    CustomCampaign?: string
+    DeduplicateCampaign?: boolean
+    EventPayload?: string
+    CustomID?: string
+    Headers?: object
+    Attachments?: [{
+        "ContentType": string
+        "Filename": string
+        "Base64Content": string
+    }]
+    InlinedAttachments?: [{
+        ContentType: string
+        Filename: string
+        ContentID: string
+        Base64Content: string
+    }]
+}
+
+interface PostResponseDataMessage {
+    readonly Status: string
+    readonly CustomID: string
+    readonly To: ReadonlyArray<PostResponseDataTo>
+    readonly Cc: ReadonlyArray<PostResponseDataTo>
+    readonly Bcc: ReadonlyArray<PostResponseDataTo>
+}
+
+interface PostResponseDataTo {
+    readonly Email: string
+    readonly MessageUUID: string
+    readonly MessageID: number
+    readonly MessageHref: string
+}
+
+interface PostResponseData {
+    readonly Messages: ReadonlyArray<PostResponseDataMessage>
+}
+
+// *** SMS private interfaces *** //
+interface GetResponseDataData {
+    readonly From: string
+    readonly To: string
+    readonly Status: ResponseStatus
+    readonly MessageId: string
+    readonly CreationTS: number
+    readonly SentTS: number
+    readonly SMSCount: number
+    readonly Cost: ResponseCost
+}
+
+interface ResponseStatus {
+    readonly Code: number
+    readonly Name: string
+    readonly Description: string
+}
+
+interface ResponseCost {
+    readonly Value: number
+    readonly Currency: string
+}
+
+interface GetResponseData {
+    readonly Data: ReadonlyArray<GetResponseDataData>
+}
+
+interface PostResponseData {
+    readonly From: string
+    readonly To: string
+    readonly Text: string
+    readonly MessageId: string
+    readonly SmsCount: number
+    readonly CreationTS: number
+    readonly SentTS: number
+    readonly Cost: ResponseCost
+    readonly Status: ResponseStatus
+}
+
+interface ExportResponseData {
+    readonly ID: number
+    readonly CreationTS?: number
+    readonly ExpirationTS?: number
+    readonly Status: ResponseStatus
+    readonly URL?: string
+    readonly FromTs?: number
+    readonly ToTs?: number
+}
+
+interface GetResponseActionData {
+    readonly Count: number
 }
